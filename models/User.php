@@ -11,15 +11,18 @@ Class User
             if (isset ($_POST['email']) && $_POST['email'] != '') {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
+                $subject='Успешная регистрация';
+                $message='Вы успешно зарегистрировались в системе учета FINANCE';
                 setcookie('email', $email);
                 setcookie('password', $password);
                 $db = db::getConnection();
                 $sql = "INSERT INTO user (email, password) VALUES (:email,:password)";
                 $result = $db->prepare($sql);
-                $result->bindParam(':email',$email);
-                $result->bindParam(':password',$password);
+                $result->bindParam(':email', $email);
+                $result->bindParam(':password', $password);
                 $result->execute();
-
+                //отправка письма с уведомлением в регистрации
+                mail($email, $subject, $message,"From: konstantinpr@ya.ru");
                 header("Location: http://new.elenachezelle.ru/pattern/fin/table");
             }
 
@@ -29,7 +32,7 @@ Class User
 
     public static function isAccess()
     {
-        setcookie('email','',time()-3600);
+        setcookie('email', '', time() - 3600);
         if (isset ($_COOKIE['email'])) {
         } else {
             header("Location: http://new.elenachezelle.ru/pattern/fin/auth");
