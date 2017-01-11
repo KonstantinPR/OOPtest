@@ -21,7 +21,7 @@ Class User
                 $result->bindParam(':email', $email);
                 $result->bindParam(':password', $password);
                 $result->execute();
-                //отправка письма с уведомлением в регистрации
+                //отправка письма с уведомлением в регистрации на почту пользователя
                 mail($email, $subject, $message,"From: konstantinpr@ya.ru");
                 header("Location: http://new.elenachezelle.ru/pattern/fin/table");
             }
